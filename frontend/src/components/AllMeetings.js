@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { FaPlus, FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { AiOutlineFullscreen } from "react-icons/ai";
 
 function AllMeetings() {
   const [meetings, setMeetings] = useState([]);
@@ -51,6 +52,32 @@ function AllMeetings() {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value.toLowerCase());
     setCurrentPage(1);
+  };
+  const handleScreen = (e) => {
+    // console.log('screen click')
+    const element = document.getElementById("fullScreen");
+    const isFullScreen = document.fullscreenElement;
+    if (!isFullScreen) {
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+      } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+      } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    }
   };
 
   const filteredMeetings = useMemo(() => {
@@ -122,8 +149,14 @@ function AllMeetings() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-gray-100 p-6" id="fullScreen">
       <div className="flex justify-end gap-4 items-center mb-4">
+        <button
+          onClick={handleScreen}
+          className="bg-lime-500 hover:bg-lime-600 text-black py-3 px-4 rounded"
+        >
+         <AiOutlineFullscreen />
+        </button>
         <Link to="/calendar">
           <button className="bg-purple-900 hover:bg-purple-950 text-white py-2 px-4 rounded flex items-center">
             <FaPlus className="mr-2" /> Meetings
